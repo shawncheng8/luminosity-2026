@@ -195,16 +195,7 @@ body {
   pointer-events: none;
   line-height: 1;
 }
-.edit-icon {
-  flex-shrink: 0;
-  margin-left: 4px;
-  font-size: 11px;
-  opacity: 0;
-  transition: opacity 0.1s;
-  cursor: pointer;
-  pointer-events: all;
-}
-.set-block:hover .edit-icon { opacity: 0.7; }
+
 
 /* ── SAVED PANEL ── */
 .saved-panel {
@@ -255,95 +246,7 @@ body {
   flex-shrink: 0;
 }
 
-/* ── EDIT BANNER ── */
-.edit-banner {
-  display: none;
-  background: rgba(127,119,221,0.12);
-  border-top: 1px solid rgba(127,119,221,0.25);
-  padding: 8px 24px;
-  font-size: 12px;
-  color: #afa9ec;
-  align-items: center;
-  gap: 10px;
-}
-.edit-banner.open { display: flex; }
 
-/* ── MODAL ── */
-.modal-overlay {
-  position: fixed; inset: 0;
-  background: rgba(0,0,0,0.75);
-  z-index: 200;
-  display: none;
-  align-items: center;
-  justify-content: center;
-}
-.modal-overlay.open { display: flex; }
-.modal {
-  background: var(--surface2);
-  border: 1px solid var(--border3);
-  border-radius: 14px;
-  padding: 24px;
-  width: 360px;
-  max-width: calc(100vw - 32px);
-}
-.modal-stage-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  font-size: 11px;
-  padding: 3px 9px;
-  border-radius: 20px;
-  border: 1px solid var(--border2);
-  color: var(--text2);
-  margin-bottom: 16px;
-}
-.modal h3 { font-size: 17px; font-weight: 700; margin-bottom: 4px; }
-.modal .day-label { font-size: 12px; color: var(--text2); margin-bottom: 16px; }
-.field { margin-bottom: 13px; }
-.field label {
-  display: block;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--text3);
-  margin-bottom: 5px;
-}
-.field input {
-  width: 100%;
-  padding: 9px 11px;
-  background: var(--surface3);
-  border: 1px solid var(--border2);
-  border-radius: 7px;
-  color: var(--text);
-  font-size: 14px;
-  outline: none;
-  transition: border-color 0.12s;
-}
-.field input:focus { border-color: var(--accent); }
-.modal-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.modal-actions { display: flex; gap: 8px; margin-top: 20px; }
-.modal-actions button {
-  flex: 1; padding: 10px;
-  border-radius: 8px;
-  border: 1px solid var(--border2);
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.12s;
-}
-.modal-cancel { background: var(--surface3); color: var(--text2); }
-.modal-cancel:hover { background: var(--surface); color: var(--text); }
-.modal-save { background: var(--accent); border-color: var(--accent); color: #fff; }
-.modal-save:hover { background: #9590e8; }
-.modal-reset {
-  background: transparent;
-  color: var(--text3);
-  border-color: transparent;
-  font-weight: 400;
-  font-size: 12px;
-}
-.modal-reset:hover { color: var(--text2); }
 
 /* scrollbar */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -364,22 +267,13 @@ body {
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"></path></svg>
         <span id="savedLabel">0 saved</span>
       </button>
-      <button class="btn" id="editBtn" onclick="toggleEditMode()">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-        Edit times
-      </button>
-      <button class="btn" onclick="exportFile()">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        Export
+      <button class="btn" onclick="generateImage()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        Export Schedule
       </button>
     </div>
   </div>
   <div class="day-tabs" id="dayTabs"></div>
-</div>
-
-<div class="edit-banner" id="editBanner">
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-  Edit mode — click any set to adjust its times and name. Click <strong style="color:#d4d0f8">Export</strong> to download a shareable HTML file with your changes baked in.
 </div>
 
 <div class="stage-filters" id="stageFilters"></div>
@@ -392,33 +286,6 @@ body {
       My sets
     </div>
     <div id="savedItems"></div>
-  </div>
-</div>
-
-<!-- Edit Modal -->
-<div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
-  <div class="modal">
-    <div class="modal-stage-badge" id="modalBadge"></div>
-    <div class="day-label" id="modalDay"></div>
-    <div class="field">
-      <label>Artist / act name</label>
-      <input type="text" id="editArtist" placeholder="Artist name" />
-    </div>
-    <div class="modal-row">
-      <div class="field">
-        <label>Start time</label>
-        <input type="time" id="editStart" />
-      </div>
-      <div class="field">
-        <label>End time</label>
-        <input type="time" id="editEnd" />
-      </div>
-    </div>
-    <div class="modal-actions">
-      <button class="modal-reset" id="resetBtn" onclick="resetEdit()">Reset to original</button>
-      <button class="modal-cancel" onclick="closeModal()">Cancel</button>
-      <button class="modal-save" onclick="saveEdit()">Save</button>
-    </div>
   </div>
 </div>
 
@@ -439,7 +306,7 @@ const BASE_DATA = [
   {day:'Thursday',stage:'Sunset Stage',artist:'CIS',start:[13,15],end:[14,30]},
   {day:'Thursday',stage:'Sunset Stage',artist:'Symmetrik',start:[14,30],end:[15,45]},
   {day:'Thursday',stage:'Sunset Stage',artist:'Shugz',start:[15,45],end:[17,0]},
-  {day:'Thursday',stage:'Sunset Stage',artist:'Frankye​ffe',start:[17,0],end:[18,0]},
+  {day:'Thursday',stage:'Sunset Stage',artist:'Frankyeffe',start:[17,0],end:[18,0]},
   {day:'Thursday',stage:'Sunset Stage',artist:'Olly James',start:[18,0],end:[19,0]},
   {day:'Thursday',stage:'Sunset Stage',artist:'Fovos',start:[19,0],end:[20,0]},
   {day:'Thursday',stage:'Sunset Stage',artist:'A.D.H.S.',start:[20,0],end:[21,0]},
@@ -578,44 +445,37 @@ const STAGE_CFG = {
   'This Is Trance!':   { color: '#5090EE', bg: 'rgba(55,138,221,0.25)', text: '#90c8ff' },
 };
 const MIN_H = 12, MAX_H = 23;
+const PX_PER_HOUR = 82;
+const TOTAL_W = (MAX_H - MIN_H) * PX_PER_HOUR;
+const AXIS_H = 20;
+const TRACK_H = 40;
+const ROW_GAP = 7;
 
 // ── STATE ──────────────────────────────────────────────────────────────────
 let currentDay = 'Thursday';
 let activeStages = new Set(STAGES);
-let saved = new Set();        // keys: "day|origArtist|stage"
+let saved = new Set();
 let showSaved = false;
-let editMode = false;
-let overrides = {};           // "day|origArtist|stage" → {artist, start, end}
-let editingKey = null;
+let hasAutoScrolled = false;
 
 // ── PERSISTENCE ───────────────────────────────────────────────────────────
 function load() {
   try {
     const s = localStorage.getItem('lbf26_saved');
     if (s) saved = new Set(JSON.parse(s));
-    const o = localStorage.getItem('lbf26_overrides');
-    if (o) overrides = JSON.parse(o);
   } catch(e) {}
 }
 function persist() {
   try {
     localStorage.setItem('lbf26_saved', JSON.stringify([...saved]));
-    localStorage.setItem('lbf26_overrides', JSON.stringify(overrides));
   } catch(e) {}
 }
 
 // ── HELPERS ───────────────────────────────────────────────────────────────
 function origKey(s) { return s.day + '|' + s.artist + '|' + s.stage; }
-function getSet(base) {
-  const k = origKey(base);
-  return overrides[k] ? { ...base, ...overrides[k] } : base;
-}
 function dec(arr) { return arr[0] + arr[1] / 60; }
 function fmt(arr) { return arr[0] + ':' + arr[1].toString().padStart(2, '0'); }
-function toHHMM(arr) { return arr[0].toString().padStart(2,'0') + ':' + arr[1].toString().padStart(2,'0'); }
-function parseTime(str) { const [h,m] = str.split(':').map(Number); return [h, m]; }
 function pct(h) { return ((h - MIN_H) / (MAX_H - MIN_H)) * 100; }
-function isOriginallyModified(k) { return !!overrides[k]; }
 
 // ── BUILD STATIC UI ───────────────────────────────────────────────────────
 function buildDayTabs() {
@@ -632,17 +492,11 @@ function buildDayTabs() {
 
 // ── RENDER ────────────────────────────────────────────────────────────────
 function render() {
-  // day tabs
   document.querySelectorAll('.day-tab').forEach(b =>
     b.classList.toggle('active', b.dataset.day === currentDay));
-
-  // buttons
   const savedBtn = document.getElementById('savedBtn');
   savedBtn.querySelector('span').textContent = saved.size + ' saved';
   savedBtn.classList.toggle('saved-active', showSaved);
-  document.getElementById('editBtn').classList.toggle('active', editMode);
-  document.getElementById('editBanner').classList.toggle('open', editMode);
-
   buildStageFilters();
   renderTimeline();
   renderSavedPanel();
@@ -666,16 +520,10 @@ function renderTimeline() {
   const tl = document.getElementById('timeline');
   tl.innerHTML = '';
 
-  const PX_PER_HOUR = 82;
-  const TOTAL_W = (MAX_H - MIN_H) * PX_PER_HOUR;
-  const AXIS_H = 20;
-  const TRACK_H = 40;
-  const ROW_GAP = 7;
+  function timeToPx(arr) { return ((arr[0] - MIN_H) + arr[1] / 60) * PX_PER_HOUR; }
 
   const dayData = BASE_DATA.filter(s => s.day === currentDay);
   const visibleStages = STAGES.filter(s => activeStages.has(s) && dayData.some(d => d.stage === s));
-
-  function timeToPx(arr) { return ((arr[0] - MIN_H) + arr[1] / 60) * PX_PER_HOUR; }
 
   const outer = document.createElement('div');
   outer.className = 'timeline-outer';
@@ -698,9 +546,10 @@ function renderTimeline() {
   // ── Scrollable tracks area ─────────────────────────────────────
   const scroll = document.createElement('div');
   scroll.className = 'tracks-scroll';
+  scroll.id = 'tracksScroll';
 
   const inner = document.createElement('div');
-  inner.style.cssText = `width:${TOTAL_W}px;`;
+  inner.style.cssText = `width:${TOTAL_W}px;position:relative;`;
 
   // Time axis
   const ax = document.createElement('div');
@@ -729,7 +578,7 @@ function renderTimeline() {
     }
 
     sets.forEach(base => {
-      const s = getSet(base);
+      const s = base;
       const k = origKey(base);
       const isSaved = saved.has(k);
       const dimmed = showSaved && !isSaved;
@@ -758,28 +607,28 @@ function renderTimeline() {
         block.appendChild(heart);
       }
 
-      if (editMode) {
-        const editIco = document.createElement('div');
-        editIco.className = 'edit-icon';
-        editIco.style.color = cfg.text;
-        editIco.innerHTML = '✎';
-        editIco.title = 'Edit';
-        block.appendChild(editIco);
-        block.onclick = () => openModal(k, s, cfg);
-      } else {
-        block.onclick = () => saveToggle(k);
-      }
-
+      block.onclick = () => saveToggle(k);
       track.appendChild(block);
     });
 
     inner.appendChild(track);
   });
 
+  // ── Time marker ────────────────────────────────────────────────
+  const markerPx = injectTimeMarker(inner);
+
   scroll.appendChild(inner);
   outer.appendChild(labelsCol);
   outer.appendChild(scroll);
   tl.appendChild(outer);
+
+  // Auto-scroll to now on first load only
+  if (markerPx !== null && !hasAutoScrolled) {
+    hasAutoScrolled = true;
+    requestAnimationFrame(() => {
+      scroll.scrollLeft = Math.max(0, markerPx - scroll.clientWidth / 2);
+    });
+  }
 }
 
 function renderSavedPanel() {
@@ -787,15 +636,20 @@ function renderSavedPanel() {
   const items = document.getElementById('savedItems');
   items.innerHTML = '';
 
-  if (!showSaved || saved.size === 0) {
+  if (!showSaved) {
     panel.classList.remove('open');
     return;
   }
   panel.classList.add('open');
 
+  if (saved.size === 0) {
+    items.innerHTML = '<div style="font-size:13px;color:var(--text3);padding:4px 0;">No sets saved yet — tap any set on the timeline to save it.</div>';
+    return;
+  }
+
   const list = [...saved].map(k => {
     const base = BASE_DATA.find(s => origKey(s) === k);
-    return base ? { k, s: getSet(base) } : null;
+    return base ? { k, s: base } : null;
   }).filter(Boolean);
 
   list.sort((a, b) => {
@@ -831,9 +685,8 @@ function checkConflict(myKey, mySet) {
     if (k === myKey) return false;
     const base = BASE_DATA.find(s => origKey(s) === k);
     if (!base) return false;
-    const other = getSet(base);
-    if (other.day !== mySet.day) return false;
-    return ms < dec(other.end) && me > dec(other.start);
+    if (base.day !== mySet.day) return false;
+    return ms < dec(base.end) && me > dec(base.start);
   });
 }
 
@@ -887,74 +740,284 @@ function toggleSavedPanel() {
   renderSavedPanel();
 }
 
-function toggleEditMode() { editMode = !editMode; render(); }
+// ── IMAGE EXPORT ──────────────────────────────────────────────────────────
+function generateImage() {
+  const savedList = [...saved].map(k => BASE_DATA.find(s => origKey(s) === k)).filter(Boolean);
+  if (savedList.length === 0) {
+    alert('Heart some sets first, then tap Export Schedule to download your image.');
+    return;
+  }
 
-// ── MODAL ─────────────────────────────────────────────────────────────────
-function openModal(key, s, cfg) {
-  editingKey = key;
-  const modified = isOriginallyModified(key);
-  const badge = document.getElementById('modalBadge');
-  badge.innerHTML = `<span style="width:8px;height:8px;border-radius:50%;background:${cfg.color};display:inline-block"></span>${s.stage}`;
-  document.getElementById('modalDay').textContent = s.day + ' · ' + DAY_DATES[s.day];
-  document.getElementById('editArtist').value = s.artist;
-  document.getElementById('editStart').value = toHHMM(s.start);
-  document.getElementById('editEnd').value = toHHMM(s.end);
-  document.getElementById('resetBtn').style.display = modified ? 'block' : 'none';
-  document.getElementById('modalOverlay').classList.add('open');
-}
-function closeModal() {
-  document.getElementById('modalOverlay').classList.remove('open');
-  editingKey = null;
-}
-function handleOverlayClick(e) { if (e.target === document.getElementById('modalOverlay')) closeModal(); }
+  const byDay = {};
+  DAYS.forEach(d => byDay[d] = []);
+  savedList.forEach(s => byDay[s.day].push(s));
+  const activeDays = DAYS.filter(d => byDay[d].length > 0);
 
-function saveEdit() {
-  if (!editingKey) return;
-  const artist = document.getElementById('editArtist').value.trim();
-  const start = parseTime(document.getElementById('editStart').value);
-  const end = parseTime(document.getElementById('editEnd').value);
-  overrides[editingKey] = { artist, start, end };
-  persist();
-  closeModal();
-  render();
-}
-function resetEdit() {
-  if (!editingKey) return;
-  delete overrides[editingKey];
-  persist();
-  closeModal();
-  render();
-}
+  // Layout
+  const W = 1200, PAD = 56, LABEL_W = 164;
+  const TRACK_W = W - PAD * 2 - LABEL_W;
+  const PX_HR = TRACK_W / (MAX_H - MIN_H);
+  const TRACK_H = 46, ROW_GAP = 7, AXIS_H = 24, DAY_GAP = 36, HEADER_H = 108;
 
-// ── EXPORT ────────────────────────────────────────────────────────────────
-function exportFile() {
-  // Merge overrides into base data
-  const merged = BASE_DATA.map(s => {
-    const k = origKey(s);
-    return overrides[k] ? { ...s, ...overrides[k] } : { ...s };
+  // Canvas colours — solid values for canvas rendering
+  const COLORS = {
+    'Mainstage Beach':   { fill: '#1e1b52', stroke: '#8F87E8', text: '#ccc8f8' },
+    'Sunset Stage':      { fill: '#0b3d2a', stroke: '#1DB880', text: '#7ee8c0' },
+    'Beachclub Bernies': { fill: '#3d2700', stroke: '#CCA030', text: '#ffd080' },
+    'This Is Trance!':   { fill: '#0b2545', stroke: '#5090EE', text: '#90c8ff' },
+  };
+
+  // Measure canvas height
+  let totalH = 50 + HEADER_H;
+  activeDays.forEach(day => {
+    const stages = STAGES.filter(st => byDay[day].some(s => s.stage === st));
+    totalH += DAY_GAP + 28 + 10 + AXIS_H + ROW_GAP + stages.length * (TRACK_H + ROW_GAP);
+  });
+  totalH += 50;
+
+  const canvas = document.createElement('canvas');
+  canvas.width = W;
+  canvas.height = totalH;
+  const ctx = canvas.getContext('2d');
+
+  // Rounded rect helper
+  function rr(x, y, w, h, r, fill, stroke, sw) {
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.lineTo(x + w - r, y);
+    ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+    ctx.lineTo(x + w, y + h - r);
+    ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+    ctx.lineTo(x + r, y + h);
+    ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+    ctx.lineTo(x, y + r);
+    ctx.quadraticCurveTo(x, y, x + r, y);
+    ctx.closePath();
+    if (fill) { ctx.fillStyle = fill; ctx.fill(); }
+    if (stroke) { ctx.strokeStyle = stroke; ctx.lineWidth = sw || 1; ctx.stroke(); }
+  }
+
+  // Background
+  ctx.fillStyle = '#07070f';
+  ctx.fillRect(0, 0, W, totalH);
+
+  // Header gradient
+  const grad = ctx.createLinearGradient(0, 0, 0, 50 + HEADER_H);
+  grad.addColorStop(0, 'rgba(127,119,221,0.14)');
+  grad.addColorStop(1, 'rgba(127,119,221,0)');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, W, 50 + HEADER_H);
+
+  // Header text
+  const ty = 50;
+  ctx.textAlign = 'left';
+  ctx.fillStyle = '#3a3a58';
+  ctx.font = '700 11px system-ui,sans-serif';
+  ctx.fillText('ZANDVOORT  ·  NETHERLANDS', PAD, ty);
+
+  ctx.fillStyle = '#eeeef8';
+  ctx.font = '700 40px system-ui,sans-serif';
+  ctx.fillText('Luminosity Beach Festival 2026', PAD, ty + 50);
+
+  ctx.fillStyle = '#7F77DD';
+  ctx.font = '600 15px system-ui,sans-serif';
+  ctx.fillText('MY SCHEDULE  ·  ' + saved.size + ' sets saved', PAD, ty + 78);
+
+  ctx.fillStyle = '#3a3a58';
+  ctx.font = '13px system-ui,sans-serif';
+  ctx.textAlign = 'right';
+  ctx.fillText('luminosity-events.nl', W - PAD, ty + 78);
+
+  // Separator
+  ctx.strokeStyle = 'rgba(255,255,255,0.07)';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(PAD, ty + HEADER_H - 8);
+  ctx.lineTo(W - PAD, ty + HEADER_H - 8);
+  ctx.stroke();
+
+  // Draw each day
+  let y = 50 + HEADER_H;
+  const trackX = PAD + LABEL_W;
+
+  activeDays.forEach(day => {
+    const daySets = byDay[day];
+    const stages = STAGES.filter(st => daySets.some(s => s.stage === st));
+
+    y += DAY_GAP;
+
+    // Day label
+    ctx.fillStyle = '#eeeef8';
+    ctx.font = '700 15px system-ui,sans-serif';
+    ctx.textAlign = 'left';
+    ctx.fillText(day.toUpperCase() + '  ·  ' + DAY_DATES[day], PAD, y + 16);
+    y += 28 + 10;
+
+    // Time axis
+    ctx.font = '11px system-ui,sans-serif';
+    ctx.textAlign = 'center';
+    for (let hr = MIN_H; hr <= MAX_H; hr++) {
+      const tx = trackX + (hr - MIN_H) * PX_HR;
+      ctx.fillStyle = '#3a3a58';
+      ctx.fillText(hr + ':00', tx, y + 13);
+    }
+    y += AXIS_H + ROW_GAP;
+
+    stages.forEach(stage => {
+      const col = COLORS[stage];
+      const stageSets = daySets.filter(s => s.stage === stage);
+
+      // Stage label — wrap if needed
+      ctx.fillStyle = '#5a5a80';
+      ctx.font = '12px system-ui,sans-serif';
+      ctx.textAlign = 'left';
+      const words = stage.split(' ');
+      let line = '', lineY = y + TRACK_H / 2 - (words.length > 2 ? 8 : 4);
+      words.forEach((word, i) => {
+        const test = line + word + ' ';
+        if (ctx.measureText(test).width > LABEL_W - 10 && line) {
+          ctx.fillText(line.trim(), PAD, lineY);
+          line = word + ' '; lineY += 15;
+        } else { line = test; }
+        if (i === words.length - 1) ctx.fillText(line.trim(), PAD, lineY);
+      });
+
+      // Track background
+      rr(trackX, y, TRACK_W, TRACK_H, 7, '#101020', 'rgba(255,255,255,0.06)', 1);
+
+      // Hour grid lines
+      for (let hr = MIN_H; hr <= MAX_H; hr++) {
+        const gx = trackX + (hr - MIN_H) * PX_HR;
+        ctx.strokeStyle = 'rgba(255,255,255,0.04)';
+        ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(gx, y); ctx.lineTo(gx, y + TRACK_H); ctx.stroke();
+      }
+
+      // Set blocks
+      stageSets.forEach(s => {
+        const bx = trackX + (dec(s.start) - MIN_H) * PX_HR;
+        const bw = Math.max((dec(s.end) - dec(s.start)) * PX_HR - 2, 4);
+        const by2 = y + 3, bh = TRACK_H - 6;
+
+        rr(bx + 1, by2, bw - 2, bh, 5, col.fill, null);
+        rr(bx + 1, by2, bw - 2, bh, 5, null, col.stroke, 1.5);
+        // Saved highlight border
+        rr(bx + 1, by2, bw - 2, bh, 5, null, 'rgba(255,255,255,0.35)', 1);
+
+        // Artist name, clipped to block
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(bx + 6, by2, bw - 12, bh);
+        ctx.clip();
+        ctx.fillStyle = col.text;
+        ctx.font = '600 11px system-ui,sans-serif';
+        ctx.textAlign = 'left';
+        ctx.fillText(s.artist, bx + 8, by2 + bh / 2 + 4);
+        ctx.restore();
+      });
+
+      y += TRACK_H + ROW_GAP;
+    });
   });
 
-  const serialized = JSON.stringify(merged)
-    .replace(/\[(\d+),(\d+)\]/g, '[$1, $2]');
+  canvas.toBlob(blob => {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'my-luminosity-2026-schedule.png';
+    a.click();
+    URL.revokeObjectURL(a.href);
+  }, 'image/png');
+}
 
-  const src = document.documentElement.outerHTML;
-  const replaced = src.replace(
-    /\/\/ __DATA_START__[\s\S]*?\/\/ __DATA_END__/,
-    '// __DATA_START__\nconst BASE_DATA = ' + serialized + ';\n// __DATA_END__'
-  );
+// ── FESTIVAL TIME MARKER ──────────────────────────────────────────────────
+const FESTIVAL_DATES = {
+  '2026-06-25': 'Thursday',
+  '2026-06-26': 'Friday',
+  '2026-06-27': 'Saturday',
+  '2026-06-28': 'Sunday',
+};
 
-  const blob = new Blob([replaced], { type: 'text/html' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'luminosity-2026-schedule.html';
-  a.click();
-  URL.revokeObjectURL(a.href);
+function getFestivalNow() {
+  try {
+    const now = new Date();
+    const parts = new Intl.DateTimeFormat('en-CA', {
+      timeZone: 'Europe/Amsterdam',
+      year: 'numeric', month: '2-digit', day: '2-digit',
+      hour: '2-digit', minute: '2-digit', hour12: false,
+    }).formatToParts(now);
+    const get = t => parts.find(p => p.type === t).value;
+    const dateStr = `${get('year')}-${get('month')}-${get('day')}`;
+    const hour = parseInt(get('hour'), 10);
+    const minute = parseInt(get('minute'), 10);
+    const day = FESTIVAL_DATES[dateStr];
+    if (!day) return null;                    // not a festival date
+    if (hour < MIN_H || hour >= MAX_H) return null;  // outside festival hours
+    return { day, hour, minute };
+  } catch(e) { return null; }
+}
+
+// Injects the now-line into `inner`. Returns the marker's px position, or null if not applicable.
+function injectTimeMarker(inner) {
+  const now = getFestivalNow();
+  if (!now || now.day !== currentDay) return null;
+
+  const markerPx = (now.hour - MIN_H + now.minute / 60) * PX_PER_HOUR;
+  const timeStr = `${now.hour}:${now.minute.toString().padStart(2, '0')}`;
+
+  const line = document.createElement('div');
+  line.id = 'time-marker';
+  line.style.cssText = `position:absolute;top:0;bottom:0;left:${markerPx}px;width:2px;background:rgba(255,255,255,0.88);box-shadow:0 0 8px rgba(255,255,255,0.35),0 0 18px rgba(255,255,255,0.1);pointer-events:none;z-index:30;`;
+
+  const pill = document.createElement('div');
+  pill.style.cssText = `position:absolute;top:3px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,0.92);color:#07070f;font-size:10px;font-weight:700;padding:2px 6px;border-radius:3px;white-space:nowrap;letter-spacing:0.02em;`;
+  pill.textContent = timeStr;
+  line.appendChild(pill);
+
+  inner.appendChild(line);
+  return markerPx;
+}
+
+// Called every minute to reposition the marker without rebuilding the timeline.
+function updateMarker() {
+  const now = getFestivalNow();
+  const existing = document.getElementById('time-marker');
+
+  if (!now || now.day !== currentDay) {
+    if (existing) existing.remove();
+    return;
+  }
+
+  const markerPx = (now.hour - MIN_H + now.minute / 60) * PX_PER_HOUR;
+  const timeStr = `${now.hour}:${now.minute.toString().padStart(2, '0')}`;
+
+  if (existing) {
+    existing.style.left = markerPx + 'px';
+    const pill = existing.querySelector('div');
+    if (pill) pill.textContent = timeStr;
+  } else {
+    // Timeline exists but marker was missing (e.g. user switched day and came back)
+    const inner = document.querySelector('#tracksScroll > div');
+    if (inner) injectTimeMarker(inner);
+  }
 }
 
 // ── INIT ──────────────────────────────────────────────────────────────────
 load();
+
+// Auto-switch to today's festival day if applicable
+const todayFestival = getFestivalNow();
+if (todayFestival) currentDay = todayFestival.day;
+
 buildDayTabs();
 render();
+
+// Update the marker every minute
+setInterval(updateMarker, 60000);
+
+// Re-evaluate on tab focus in case the page was left open overnight
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible') updateMarker();
+});
 </script>
 </body>
 </html>
