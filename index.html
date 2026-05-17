@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Luminosity Beach Festival 2026 · Schedule</title>
+<style>
+:root {
+  --bg: #07070f;
+  --surface: #101020;
+  --surface2: #18182c;
+  --surface3: #20203a;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.13);
+  --border3: rgba(255,255,255,0.22);
+  --text: #eeeef8;
+  --text2: #8888a8;
+  --text3: #4a4a68;
+  --accent: #7F77DD;
+  --accent-dim: rgba(127,119,221,0.2);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, 'Segoe UI', system-ui, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* ── HEADER ── */
+.header {
+  padding: 20px 24px 0;
+  background: var(--bg);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  border-bottom: 1px solid var(--border);
+}
+.header-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.title-block .eyebrow {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 2px;
+}
+.title-block h1 {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+.header-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--border2);
+  background: var(--surface);
+  color: var(--text2);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s, border-color 0.12s;
+  white-space: nowrap;
+  user-select: none;
+}
+.btn:hover { background: var(--surface2); color: var(--text); border-color: var(--border3); }
+.btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn.saved-active { background: rgba(220, 80, 100, 0.2); border-color: rgba(220,80,100,0.4); color: #f88; }
+.btn svg { flex-shrink: 0; }
+
+/* ── DAY TABS ── */
+.day-tabs {
+  display: flex;
+  gap: 2px;
+  background: var(--surface);
+  border-radius: 8px;
+  padding: 3px;
+  border: 1px solid var(--border);
+  margin-bottom: 12px;
+  width: fit-content;
+}
+.day-tab {
+  padding: 6px 16px;
+  border-radius: 6px;
+  border: none;
+  background: transparent;
+  color: var(--text2);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s;
+}
+.day-tab .date { font-size: 10px; display: block; opacity: 0.6; }
+.day-tab.active { background: var(--accent); color: #fff; }
+.day-tab:hover:not(.active) { color: var(--text); }
+
+/* ── STAGE FILTERS ── */
+.stage-filters {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  padding: 10px 24px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+}
+.stage-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px 4px 8px;
+  border-radius: 20px;
+  border: 1px solid var(--border2);
+  background: var(--surface);
+  color: var(--text2);
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.12s;
+}
+.stage-pill .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.stage-pill.active { color: var(--text); background: var(--surface2); border-color: var(--border3); }
+.stage-pill.off { opacity: 0.35; }
+
+/* ── TIMELINE ── */
+.main { padding: 14px 0 40px; }
+.timeline-outer { display: flex; }
+.labels-col {
+  flex-shrink: 0;
+  width: 110px;
+  padding-left: 24px;
+}
+@media (max-width: 500px) {
+  .labels-col { width: 80px; padding-left: 12px; }
+}
+.tracks-scroll {
+  flex: 1;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-right: 24px;
+  /* hide scrollbar on mobile but keep functionality */
+  scrollbar-width: thin;
+  scrollbar-color: var(--surface3) transparent;
+}
+.tracks-scroll::-webkit-scrollbar { height: 4px; }
+.tracks-scroll::-webkit-scrollbar-track { background: transparent; }
+.tracks-scroll::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 2px; }
+.set-block {
+  position: absolute;
+  top: 3px; bottom: 3px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  padding: 0 7px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  overflow: hidden;
+  transition: filter 0.12s, transform 0.1s;
+  z-index: 1;
+  min-width: 4px;
+}
+.set-block:hover { filter: brightness(1.3); z-index: 20; transform: scaleY(1.06); }
+.set-block.saved {
+  border: 2px solid rgba(255,255,255,0.75) !important;
+  filter: brightness(1.5) saturate(1.2);
+  box-shadow: 0 0 8px rgba(255,255,255,0.12);
+}
+.set-block.saved:hover { filter: brightness(1.8) saturate(1.3); }
+.set-block.dimmed { opacity: 0.12; pointer-events: none; }
+.artist-label {
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  pointer-events: none;
+  flex: 1;
+}
+.saved-heart {
+  flex-shrink: 0;
+  font-size: 10px;
+  margin-left: 3px;
+  pointer-events: none;
+  line-height: 1;
+}
+.edit-icon {
+  flex-shrink: 0;
+  margin-left: 4px;
+  font-size: 11px;
+  opacity: 0;
+  transition: opacity 0.1s;
+  cursor: pointer;
+  pointer-events: all;
+}
+.set-block:hover .edit-icon { opacity: 0.7; }
+
+/* ── SAVED PANEL ── */
+.saved-panel {
+  margin-top: 16px;
+  padding: 16px 18px;
+  background: var(--surface);
+  border-radius: 12px;
+  border: 1px solid var(--border2);
+  display: none;
+}
+.saved-panel.open { display: block; }
+.saved-panel-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.saved-day-header {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin: 10px 0 5px;
+}
+.saved-day-header:first-child { margin-top: 0; }
+.saved-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 6px;
+  background: var(--surface2);
+  margin-bottom: 3px;
+  gap: 8px;
+}
+.saved-row .sname { font-weight: 600; font-size: 13px; color: var(--text); }
+.saved-row .smeta { font-size: 11px; color: var(--text2); white-space: nowrap; }
+.conflict-tag {
+  font-size: 10px;
+  background: rgba(220, 80, 48, 0.2);
+  color: #f09070;
+  border-radius: 4px;
+  padding: 2px 7px;
+  flex-shrink: 0;
+}
+
+/* ── EDIT BANNER ── */
+.edit-banner {
+  display: none;
+  background: rgba(127,119,221,0.12);
+  border-top: 1px solid rgba(127,119,221,0.25);
+  padding: 8px 24px;
+  font-size: 12px;
+  color: #afa9ec;
+  align-items: center;
+  gap: 10px;
+}
+.edit-banner.open { display: flex; }
+
+/* ── MODAL ── */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.75);
+  z-index: 200;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: var(--surface2);
+  border: 1px solid var(--border3);
+  border-radius: 14px;
+  padding: 24px;
+  width: 360px;
+  max-width: calc(100vw - 32px);
+}
+.modal-stage-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  padding: 3px 9px;
+  border-radius: 20px;
+  border: 1px solid var(--border2);
+  color: var(--text2);
+  margin-bottom: 16px;
+}
+.modal h3 { font-size: 17px; font-weight: 700; margin-bottom: 4px; }
+.modal .day-label { font-size: 12px; color: var(--text2); margin-bottom: 16px; }
+.field { margin-bottom: 13px; }
+.field label {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 5px;
+}
+.field input {
+  width: 100%;
+  padding: 9px 11px;
+  background: var(--surface3);
+  border: 1px solid var(--border2);
+  border-radius: 7px;
+  color: var(--text);
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.12s;
+}
+.field input:focus { border-color: var(--accent); }
+.modal-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.modal-actions { display: flex; gap: 8px; margin-top: 20px; }
+.modal-actions button {
+  flex: 1; padding: 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border2);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.12s;
+}
+.modal-cancel { background: var(--surface3); color: var(--text2); }
+.modal-cancel:hover { background: var(--surface); color: var(--text); }
+.modal-save { background: var(--accent); border-color: var(--accent); color: #fff; }
+.modal-save:hover { background: #9590e8; }
+.modal-reset {
+  background: transparent;
+  color: var(--text3);
+  border-color: transparent;
+  font-weight: 400;
+  font-size: 12px;
+}
+.modal-reset:hover { color: var(--text2); }
+
+/* scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <div class="title-block">
+      <div class="eyebrow">Zandvoort · Netherlands</div>
+      <h1>Luminosity Beach Festival 2026</h1>
+    </div>
+    <div class="header-actions">
+      <button class="btn" id="savedBtn" onclick="toggleSavedPanel()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+        <span id="savedLabel">0 saved</span>
+      </button>
+      <button class="btn" id="editBtn" onclick="toggleEditMode()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        Edit times
+      </button>
+      <button class="btn" onclick="exportFile()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Export
+      </button>
+    </div>
+  </div>
+  <div class="day-tabs" id="dayTabs"></div>
+</div>
+
+<div class="edit-banner" id="editBanner">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+  Edit mode — click any set to adjust its times and name. Click <strong style="color:#d4d0f8">Export</strong> to download a shareable HTML file with your changes baked in.
+</div>
+
+<div class="stage-filters" id="stageFilters"></div>
+
+<div class="main">
+  <div id="timeline"></div>
+  <div class="saved-panel" id="savedPanel" style="margin:16px 24px 0;">
+    <div class="saved-panel-title">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="#f55" stroke="#f55" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      My sets
+    </div>
+    <div id="savedItems"></div>
+  </div>
+</div>
+
+<!-- Edit Modal -->
+<div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
+  <div class="modal">
+    <div class="modal-stage-badge" id="modalBadge"></div>
+    <div class="day-label" id="modalDay"></div>
+    <div class="field">
+      <label>Artist / act name</label>
+      <input type="text" id="editArtist" placeholder="Artist name" />
+    </div>
+    <div class="modal-row">
+      <div class="field">
+        <label>Start time</label>
+        <input type="time" id="editStart" />
+      </div>
+      <div class="field">
+        <label>End time</label>
+        <input type="time" id="editEnd" />
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="modal-reset" id="resetBtn" onclick="resetEdit()">Reset to original</button>
+      <button class="modal-cancel" onclick="closeModal()">Cancel</button>
+      <button class="modal-save" onclick="saveEdit()">Save</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// __DATA_START__
+const BASE_DATA = [
+  // THURSDAY
+  {day:'Thursday',stage:'Mainstage Beach',artist:'Aeon Shift',start:[12,0],end:[13,15]},
+  {day:'Thursday',stage:'Mainstage Beach',artist:'Factoria',start:[13,15],end:[14,30]},
+  {day:'Thursday',stage:'Mainstage Beach',artist:'Doppenberg',start:[14,30],end:[15,30]},
+  {day:'Thursday',stage:'Mainstage Beach',artist:'Paul Webster',start:[15,30],end:[16,30]},
+  {day:'Thursday',stage:'Mainstage Beach',artist:'Ruben de Ronde pres. NRG 2000',start:[16,30],end:[17,45]},
+  {day:'Thursday',stage:'Mainstage Beach',artist:'Dash Berlin',start:[17,45],end:[19,0]},
+  {day:'Thursday',stage:'Mainstage Beach',artist:'Markus Schulz',start:[19,0],end:[20,30]},
+  {day:'Thursday',stage:'Mainstage Beach',artist:'RAM & Richard Durand pres. Digital Culture',start:[20,30],end:[21,45]},
+  {day:'Thursday',stage:'Mainstage Beach',artist:'Will Atkinson b2b Nifra',start:[21,45],end:[23,0]},
+  {day:'Thursday',stage:'Sunset Stage',artist:'Anselli',start:[12,0],end:[13,15]},
+  {day:'Thursday',stage:'Sunset Stage',artist:'CIS',start:[13,15],end:[14,30]},
+  {day:'Thursday',stage:'Sunset Stage',artist:'Symmetrik',start:[14,30],end:[15,45]},
+  {day:'Thursday',stage:'Sunset Stage',artist:'Shugz',start:[15,45],end:[17,0]},
+  {day:'Thursday',stage:'Sunset Stage',artist:'Frankye​ffe',start:[17,0],end:[18,0]},
+  {day:'Thursday',stage:'Sunset Stage',artist:'Olly James',start:[18,0],end:[19,0]},
+  {day:'Thursday',stage:'Sunset Stage',artist:'Fovos',start:[19,0],end:[20,0]},
+  {day:'Thursday',stage:'Sunset Stage',artist:'A.D.H.S.',start:[20,0],end:[21,0]},
+  {day:'Thursday',stage:'Sunset Stage',artist:'Thomas Schumacher',start:[21,0],end:[22,0]},
+  {day:'Thursday',stage:'Sunset Stage',artist:'David Rust',start:[22,0],end:[23,0]},
+  {day:'Thursday',stage:'Beachclub Bernies',artist:'Amber Revival',start:[13,0],end:[14,15]},
+  {day:'Thursday',stage:'Beachclub Bernies',artist:'James Cottle',start:[14,15],end:[15,30]},
+  {day:'Thursday',stage:'Beachclub Bernies',artist:"Simon O'Shine",start:[15,30],end:[16,40]},
+  {day:'Thursday',stage:'Beachclub Bernies',artist:'Driftmoon',start:[16,40],end:[17,50]},
+  {day:'Thursday',stage:'Beachclub Bernies',artist:'Artento Divini',start:[17,50],end:[19,0]},
+  {day:'Thursday',stage:'Beachclub Bernies',artist:'Manuel Le Saux',start:[19,0],end:[20,0]},
+  {day:'Thursday',stage:'Beachclub Bernies',artist:'Xijaro & Pitch',start:[20,0],end:[21,0]},
+  {day:'Thursday',stage:'Beachclub Bernies',artist:'Talla 2XLC',start:[21,0],end:[22,0]},
+  {day:'Thursday',stage:'Beachclub Bernies',artist:'RAM',start:[22,0],end:[23,0]},
+  // FRIDAY
+  {day:'Friday',stage:'Mainstage Beach',artist:'Stephen Kirkwood',start:[12,0],end:[13,30]},
+  {day:'Friday',stage:'Mainstage Beach',artist:'HEL:BRG',start:[13,30],end:[15,0]},
+  {day:'Friday',stage:'Mainstage Beach',artist:'Mauro Picotto',start:[15,0],end:[16,0]},
+  {day:'Friday',stage:'Mainstage Beach',artist:'Neelix',start:[16,0],end:[17,0]},
+  {day:'Friday',stage:'Mainstage Beach',artist:'Paul van Dyk b2b John 00 Fleming',start:[17,0],end:[18,0]},
+  {day:'Friday',stage:'Mainstage Beach',artist:'Space 92',start:[18,0],end:[19,15]},
+  {day:'Friday',stage:'Mainstage Beach',artist:'Joyhauser',start:[19,15],end:[20,30]},
+  {day:'Friday',stage:'Mainstage Beach',artist:'Ben Nicky pres. Emotional Havoc',start:[20,30],end:[21,45]},
+  {day:'Friday',stage:'Mainstage Beach',artist:'Maddix',start:[21,45],end:[23,0]},
+  {day:'Friday',stage:'Sunset Stage',artist:'Daniel Wanrooy',start:[12,0],end:[13,15]},
+  {day:'Friday',stage:'Sunset Stage',artist:'Chris Metcalfe',start:[13,15],end:[14,30]},
+  {day:'Friday',stage:'Sunset Stage',artist:'Trance Wax',start:[14,30],end:[15,45]},
+  {day:'Friday',stage:'Sunset Stage',artist:'Ferry Tayle & Tonks pres. Mirage (Live)',start:[15,45],end:[17,0]},
+  {day:'Friday',stage:'Sunset Stage',artist:'Daxson',start:[17,0],end:[18,15]},
+  {day:'Friday',stage:'Sunset Stage',artist:'The Thrillseekers',start:[18,15],end:[19,30]},
+  {day:'Friday',stage:'Sunset Stage',artist:'Paul Denton',start:[19,30],end:[20,40]},
+  {day:'Friday',stage:'Sunset Stage',artist:'Richard Durand',start:[20,40],end:[21,50]},
+  {day:'Friday',stage:'Sunset Stage',artist:'Mark Sherry',start:[21,50],end:[23,0]},
+  {day:'Friday',stage:'Beachclub Bernies',artist:'Peter Steele',start:[12,0],end:[14,0]},
+  {day:'Friday',stage:'Beachclub Bernies',artist:'Airwave (Live)',start:[14,0],end:[15,15]},
+  {day:'Friday',stage:'Beachclub Bernies',artist:'Super8 & Tab',start:[15,15],end:[16,30]},
+  {day:'Friday',stage:'Beachclub Bernies',artist:'Solarstone',start:[16,30],end:[17,45]},
+  {day:'Friday',stage:'Beachclub Bernies',artist:'Gabriel & Dresden',start:[17,45],end:[19,15]},
+  {day:'Friday',stage:'Beachclub Bernies',artist:'Roger Shah',start:[19,15],end:[20,30]},
+  {day:'Friday',stage:'Beachclub Bernies',artist:'Maria Healy',start:[20,30],end:[21,45]},
+  {day:'Friday',stage:'Beachclub Bernies',artist:'John 00 Fleming',start:[21,45],end:[23,0]},
+  {day:'Friday',stage:'This Is Trance!',artist:'Murzo',start:[12,0],end:[13,15]},
+  {day:'Friday',stage:'This Is Trance!',artist:'Robbie Seed',start:[13,15],end:[14,30]},
+  {day:'Friday',stage:'This Is Trance!',artist:'Darren Porter',start:[14,30],end:[15,45]},
+  {day:'Friday',stage:'This Is Trance!',artist:'Ciaran McAuley',start:[15,45],end:[17,0]},
+  {day:'Friday',stage:'This Is Trance!',artist:'Alex M.O.R.P.H.',start:[17,0],end:[18,0]},
+  {day:'Friday',stage:'This Is Trance!',artist:'Paul Webster (Classics)',start:[18,0],end:[19,0]},
+  {day:'Friday',stage:'This Is Trance!',artist:'Lostly',start:[19,0],end:[20,0]},
+  {day:'Friday',stage:'This Is Trance!',artist:'Asteroid',start:[20,0],end:[21,0]},
+  {day:'Friday',stage:'This Is Trance!',artist:'Indecent Noise',start:[21,0],end:[22,0]},
+  {day:'Friday',stage:'This Is Trance!',artist:'Sam Jones',start:[22,0],end:[23,0]},
+  // SATURDAY
+  {day:'Saturday',stage:'Mainstage Beach',artist:'Sam Mitcham',start:[12,0],end:[14,0]},
+  {day:'Saturday',stage:'Mainstage Beach',artist:'BLR',start:[14,0],end:[15,30]},
+  {day:'Saturday',stage:'Mainstage Beach',artist:'Will Rees & Paul Denton pres. Parallel Worlds',start:[15,30],end:[17,0]},
+  {day:'Saturday',stage:'Mainstage Beach',artist:"John O'Callaghan",start:[17,0],end:[18,30]},
+  {day:'Saturday',stage:'Mainstage Beach',artist:'Bryan Kearney',start:[18,30],end:[20,0]},
+  {day:'Saturday',stage:'Mainstage Beach',artist:'Ferry Corsten',start:[20,0],end:[21,30]},
+  {day:'Saturday',stage:'Mainstage Beach',artist:'Paul van Dyk',start:[21,30],end:[23,0]},
+  {day:'Saturday',stage:'Sunset Stage',artist:'Toyax',start:[12,0],end:[13,0]},
+  {day:'Saturday',stage:'Sunset Stage',artist:'Mddl.tn',start:[13,0],end:[14,0]},
+  {day:'Saturday',stage:'Sunset Stage',artist:'Shvdz',start:[14,0],end:[15,0]},
+  {day:'Saturday',stage:'Sunset Stage',artist:'Alex di Stefano',start:[15,0],end:[16,0]},
+  {day:'Saturday',stage:'Sunset Stage',artist:'Mha Iri',start:[16,0],end:[17,0]},
+  {day:'Saturday',stage:'Sunset Stage',artist:'Sander van Doorn',start:[17,0],end:[18,0]},
+  {day:'Saturday',stage:'Sunset Stage',artist:'Amber Broos',start:[18,0],end:[19,0]},
+  {day:'Saturday',stage:'Sunset Stage',artist:'VE/RA',start:[19,0],end:[20,0]},
+  {day:'Saturday',stage:'Sunset Stage',artist:'Andrew Rayel pres. Extasia',start:[20,0],end:[21,0]},
+  {day:'Saturday',stage:'Sunset Stage',artist:'Giuseppe Ottaviani',start:[21,0],end:[22,0]},
+  {day:'Saturday',stage:'Sunset Stage',artist:'Alignment',start:[22,0],end:[23,0]},
+  {day:'Saturday',stage:'Beachclub Bernies',artist:'Sinful Biz',start:[12,0],end:[13,0]},
+  {day:'Saturday',stage:'Beachclub Bernies',artist:'Orkidea',start:[13,0],end:[14,0]},
+  {day:'Saturday',stage:'Beachclub Bernies',artist:'Estiva',start:[14,0],end:[15,0]},
+  {day:'Saturday',stage:'Beachclub Bernies',artist:'Waio',start:[15,0],end:[16,0]},
+  {day:'Saturday',stage:'Beachclub Bernies',artist:'Sean Tyas',start:[16,0],end:[17,0]},
+  {day:'Saturday',stage:'Beachclub Bernies',artist:'Greg Downey',start:[17,0],end:[18,0]},
+  {day:'Saturday',stage:'Beachclub Bernies',artist:'Simon Patterson',start:[18,0],end:[19,0]},
+  {day:'Saturday',stage:'Beachclub Bernies',artist:'John Askew',start:[19,0],end:[20,0]},
+  {day:'Saturday',stage:'Beachclub Bernies',artist:'Will Atkinson',start:[20,0],end:[21,0]},
+  {day:'Saturday',stage:'Beachclub Bernies',artist:'Nifra',start:[21,0],end:[22,0]},
+  {day:'Saturday',stage:'Beachclub Bernies',artist:'David Forbes',start:[22,0],end:[23,0]},
+  {day:'Saturday',stage:'This Is Trance!',artist:'Spark Shade',start:[12,0],end:[13,0]},
+  {day:'Saturday',stage:'This Is Trance!',artist:'Jonas Steur',start:[13,0],end:[14,0]},
+  {day:'Saturday',stage:'This Is Trance!',artist:'Ralphie B pres. Midway',start:[14,0],end:[15,0]},
+  {day:'Saturday',stage:'This Is Trance!',artist:'Pedro del Mar',start:[15,0],end:[16,0]},
+  {day:'Saturday',stage:'This Is Trance!',artist:'Cor Fijneman',start:[16,0],end:[17,0]},
+  {day:'Saturday',stage:'This Is Trance!',artist:'Schiller',start:[17,0],end:[18,15]},
+  {day:'Saturday',stage:'This Is Trance!',artist:'DJ Danjo & Rob Styles',start:[18,15],end:[19,30]},
+  {day:'Saturday',stage:'This Is Trance!',artist:'Andrea Ribeca',start:[19,30],end:[20,40]},
+  {day:'Saturday',stage:'This Is Trance!',artist:'DJ Quicksilver',start:[20,40],end:[21,50]},
+  {day:'Saturday',stage:'This Is Trance!',artist:'Dumonde aka Jamx',start:[21,50],end:[23,0]},
+  // SUNDAY
+  {day:'Sunday',stage:'Mainstage Beach',artist:'Estiva',start:[12,0],end:[13,30]},
+  {day:'Sunday',stage:'Mainstage Beach',artist:'Amy Wiles',start:[13,30],end:[15,0]},
+  {day:'Sunday',stage:'Mainstage Beach',artist:'Craig Connelly pres. Collider Live',start:[15,0],end:[16,20]},
+  {day:'Sunday',stage:'Mainstage Beach',artist:'Factor B',start:[16,20],end:[17,40]},
+  {day:'Sunday',stage:'Mainstage Beach',artist:'Sneijder',start:[17,40],end:[19,0]},
+  {day:'Sunday',stage:'Mainstage Beach',artist:'Billy Gillies pres. FRNC',start:[19,0],end:[20,0]},
+  {day:'Sunday',stage:'Mainstage Beach',artist:'Aly & Fila',start:[20,0],end:[21,30]},
+  {day:'Sunday',stage:'Mainstage Beach',artist:'Key 4050',start:[21,30],end:[23,0]},
+  {day:'Sunday',stage:'Sunset Stage',artist:'K.A.D',start:[12,0],end:[13,0]},
+  {day:'Sunday',stage:'Sunset Stage',artist:'Gia',start:[13,0],end:[14,0]},
+  {day:'Sunday',stage:'Sunset Stage',artist:'Liam Wilson',start:[14,0],end:[15,0]},
+  {day:'Sunday',stage:'Sunset Stage',artist:'Matty Ralph',start:[15,0],end:[16,0]},
+  {day:'Sunday',stage:'Sunset Stage',artist:'Sander van Doorn b2b Marco V',start:[16,0],end:[17,0]},
+  {day:'Sunday',stage:'Sunset Stage',artist:'Billy Gillies',start:[17,0],end:[18,20]},
+  {day:'Sunday',stage:'Sunset Stage',artist:'The Rocketman',start:[18,20],end:[19,40]},
+  {day:'Sunday',stage:'Sunset Stage',artist:'Hannah Laing',start:[19,40],end:[21,0]},
+  {day:'Sunday',stage:'Sunset Stage',artist:'Marie Vaunt',start:[21,0],end:[22,0]},
+  {day:'Sunday',stage:'Sunset Stage',artist:'T78',start:[22,0],end:[23,0]},
+  {day:'Sunday',stage:'Beachclub Bernies',artist:'Allknight',start:[12,0],end:[14,0]},
+  {day:'Sunday',stage:'Beachclub Bernies',artist:'Catching Flies',start:[14,0],end:[16,0]},
+  {day:'Sunday',stage:'Beachclub Bernies',artist:'Nils Hoffmann',start:[16,0],end:[18,0]},
+  {day:'Sunday',stage:'Beachclub Bernies',artist:'Romain Garcia (3 hour set)',start:[18,0],end:[21,0]},
+  {day:'Sunday',stage:'Beachclub Bernies',artist:'Super8 & Tab (Anjunabeats Classics)',start:[21,0],end:[23,0]},
+  {day:'Sunday',stage:'This Is Trance!',artist:'Dan Stone',start:[12,0],end:[13,15]},
+  {day:'Sunday',stage:'This Is Trance!',artist:'Cold Blue',start:[13,15],end:[14,30]},
+  {day:'Sunday',stage:'This Is Trance!',artist:'JES',start:[14,30],end:[15,45]},
+  {day:'Sunday',stage:'This Is Trance!',artist:'Enigma State',start:[15,45],end:[17,0]},
+  {day:'Sunday',stage:'This Is Trance!',artist:'Sophie Sugar',start:[17,0],end:[18,0]},
+  {day:'Sunday',stage:'This Is Trance!',artist:'Allen Watts',start:[18,0],end:[19,0]},
+  {day:'Sunday',stage:'This Is Trance!',artist:'Will Rees',start:[19,0],end:[20,0]},
+  {day:'Sunday',stage:'This Is Trance!',artist:'Edele Andaya',start:[20,0],end:[21,0]},
+  {day:'Sunday',stage:'This Is Trance!',artist:'Craig Connelly vinyl set',start:[21,0],end:[22,0]},
+  {day:'Sunday',stage:'This Is Trance!',artist:'Agnelli & Nelson',start:[22,0],end:[23,0]},
+];
+// __DATA_END__
+
+const DAYS = ['Thursday','Friday','Saturday','Sunday'];
+const DAY_DATES = { Thursday: '25 Jun', Friday: '26 Jun', Saturday: '27 Jun', Sunday: '28 Jun' };
+const STAGES = ['Mainstage Beach','Sunset Stage','Beachclub Bernies','This Is Trance!'];
+const STAGE_CFG = {
+  'Mainstage Beach':   { color: '#8F87E8', bg: 'rgba(127,119,221,0.25)', text: '#ccc8f8' },
+  'Sunset Stage':      { color: '#1DB880', bg: 'rgba(29,158,117,0.25)', text: '#7ee8c0' },
+  'Beachclub Bernies': { color: '#CCA030', bg: 'rgba(186,117,23,0.25)', text: '#ffd080' },
+  'This Is Trance!':   { color: '#5090EE', bg: 'rgba(55,138,221,0.25)', text: '#90c8ff' },
+};
+const MIN_H = 12, MAX_H = 23;
+
+// ── STATE ──────────────────────────────────────────────────────────────────
+let currentDay = 'Thursday';
+let activeStages = new Set(STAGES);
+let saved = new Set();        // keys: "day|origArtist|stage"
+let showSaved = false;
+let editMode = false;
+let overrides = {};           // "day|origArtist|stage" → {artist, start, end}
+let editingKey = null;
+
+// ── PERSISTENCE ───────────────────────────────────────────────────────────
+function load() {
+  try {
+    const s = localStorage.getItem('lbf26_saved');
+    if (s) saved = new Set(JSON.parse(s));
+    const o = localStorage.getItem('lbf26_overrides');
+    if (o) overrides = JSON.parse(o);
+  } catch(e) {}
+}
+function persist() {
+  try {
+    localStorage.setItem('lbf26_saved', JSON.stringify([...saved]));
+    localStorage.setItem('lbf26_overrides', JSON.stringify(overrides));
+  } catch(e) {}
+}
+
+// ── HELPERS ───────────────────────────────────────────────────────────────
+function origKey(s) { return s.day + '|' + s.artist + '|' + s.stage; }
+function getSet(base) {
+  const k = origKey(base);
+  return overrides[k] ? { ...base, ...overrides[k] } : base;
+}
+function dec(arr) { return arr[0] + arr[1] / 60; }
+function fmt(arr) { return arr[0] + ':' + arr[1].toString().padStart(2, '0'); }
+function toHHMM(arr) { return arr[0].toString().padStart(2,'0') + ':' + arr[1].toString().padStart(2,'0'); }
+function parseTime(str) { const [h,m] = str.split(':').map(Number); return [h, m]; }
+function pct(h) { return ((h - MIN_H) / (MAX_H - MIN_H)) * 100; }
+function isOriginallyModified(k) { return !!overrides[k]; }
+
+// ── BUILD STATIC UI ───────────────────────────────────────────────────────
+function buildDayTabs() {
+  const c = document.getElementById('dayTabs');
+  DAYS.forEach(d => {
+    const b = document.createElement('button');
+    b.className = 'day-tab';
+    b.dataset.day = d;
+    b.innerHTML = d + '<span class="date">' + DAY_DATES[d] + '</span>';
+    b.onclick = () => { currentDay = d; render(); };
+    c.appendChild(b);
+  });
+}
+
+// ── RENDER ────────────────────────────────────────────────────────────────
+function render() {
+  // day tabs
+  document.querySelectorAll('.day-tab').forEach(b =>
+    b.classList.toggle('active', b.dataset.day === currentDay));
+
+  // buttons
+  const savedBtn = document.getElementById('savedBtn');
+  savedBtn.querySelector('span').textContent = saved.size + ' saved';
+  savedBtn.classList.toggle('saved-active', showSaved);
+  document.getElementById('editBtn').classList.toggle('active', editMode);
+  document.getElementById('editBanner').classList.toggle('open', editMode);
+
+  buildStageFilters();
+  renderTimeline();
+  renderSavedPanel();
+}
+
+function buildStageFilters() {
+  const c = document.getElementById('stageFilters');
+  c.innerHTML = '';
+  STAGES.forEach(s => {
+    const cfg = STAGE_CFG[s];
+    const on = activeStages.has(s);
+    const pill = document.createElement('button');
+    pill.className = 'stage-pill ' + (on ? 'active' : 'off');
+    pill.innerHTML = `<span class="dot" style="background:${cfg.color}"></span>${s}`;
+    pill.onclick = () => { on ? activeStages.delete(s) : activeStages.add(s); render(); };
+    c.appendChild(pill);
+  });
+}
+
+function renderTimeline() {
+  const tl = document.getElementById('timeline');
+  tl.innerHTML = '';
+
+  const PX_PER_HOUR = 82;
+  const TOTAL_W = (MAX_H - MIN_H) * PX_PER_HOUR;
+  const AXIS_H = 20;
+  const TRACK_H = 40;
+  const ROW_GAP = 7;
+
+  const dayData = BASE_DATA.filter(s => s.day === currentDay);
+  const visibleStages = STAGES.filter(s => activeStages.has(s) && dayData.some(d => d.stage === s));
+
+  function timeToPx(arr) { return ((arr[0] - MIN_H) + arr[1] / 60) * PX_PER_HOUR; }
+
+  const outer = document.createElement('div');
+  outer.className = 'timeline-outer';
+
+  // ── Labels column ──────────────────────────────────────────────
+  const labelsCol = document.createElement('div');
+  labelsCol.className = 'labels-col';
+
+  const spacer = document.createElement('div');
+  spacer.style.height = (AXIS_H + ROW_GAP) + 'px';
+  labelsCol.appendChild(spacer);
+
+  visibleStages.forEach(stage => {
+    const lbl = document.createElement('div');
+    lbl.style.cssText = `height:${TRACK_H + ROW_GAP}px;display:flex;align-items:center;font-size:11px;color:var(--text2);padding-right:8px;line-height:1.3;`;
+    lbl.textContent = stage;
+    labelsCol.appendChild(lbl);
+  });
+
+  // ── Scrollable tracks area ─────────────────────────────────────
+  const scroll = document.createElement('div');
+  scroll.className = 'tracks-scroll';
+
+  const inner = document.createElement('div');
+  inner.style.cssText = `width:${TOTAL_W}px;`;
+
+  // Time axis
+  const ax = document.createElement('div');
+  ax.style.cssText = `position:relative;height:${AXIS_H}px;margin-bottom:${ROW_GAP}px;`;
+  for (let h = MIN_H; h <= MAX_H; h++) {
+    const tick = document.createElement('div');
+    tick.style.cssText = `position:absolute;left:${(h - MIN_H) * PX_PER_HOUR}px;transform:translateX(-50%);font-size:10px;color:var(--text3);white-space:nowrap;`;
+    tick.textContent = h + ':00';
+    ax.appendChild(tick);
+  }
+  inner.appendChild(ax);
+
+  // Tracks
+  visibleStages.forEach(stage => {
+    const cfg = STAGE_CFG[stage];
+    const sets = dayData.filter(s => s.stage === stage);
+
+    const track = document.createElement('div');
+    track.style.cssText = `position:relative;height:${TRACK_H}px;margin-bottom:${ROW_GAP}px;background:var(--surface);border-radius:8px;border:1px solid var(--border);`;
+
+    // Grid lines
+    for (let h = MIN_H; h <= MAX_H; h++) {
+      const gl = document.createElement('div');
+      gl.style.cssText = `position:absolute;top:0;bottom:0;left:${(h - MIN_H) * PX_PER_HOUR}px;width:1px;background:rgba(255,255,255,0.04);pointer-events:none;`;
+      track.appendChild(gl);
+    }
+
+    sets.forEach(base => {
+      const s = getSet(base);
+      const k = origKey(base);
+      const isSaved = saved.has(k);
+      const dimmed = showSaved && !isSaved;
+
+      const startPx = timeToPx(s.start);
+      const blockW = Math.max(timeToPx(s.end) - startPx, 4);
+
+      const block = document.createElement('div');
+      block.className = 'set-block' + (isSaved ? ' saved' : '') + (dimmed ? ' dimmed' : '');
+      block.style.cssText = `left:${startPx}px;width:${blockW}px;background:${cfg.bg};border-color:transparent;`;
+      block.title = `${s.artist} · ${fmt(s.start)}–${fmt(s.end)}`;
+
+      const nameEl = document.createElement('div');
+      nameEl.className = 'artist-label';
+      nameEl.style.color = cfg.text;
+      nameEl.textContent = s.artist;
+      block.appendChild(nameEl);
+
+      if (isSaved) {
+        const heart = document.createElement('div');
+        heart.className = 'saved-heart';
+        heart.textContent = '♥';
+        heart.style.color = cfg.text;
+        block.appendChild(heart);
+      }
+
+      if (editMode) {
+        const editIco = document.createElement('div');
+        editIco.className = 'edit-icon';
+        editIco.style.color = cfg.text;
+        editIco.innerHTML = '✎';
+        editIco.title = 'Edit';
+        block.appendChild(editIco);
+        block.onclick = () => openModal(k, s, cfg);
+      } else {
+        block.onclick = () => {
+          saved.has(k) ? saved.delete(k) : saved.add(k);
+          persist();
+          render();
+        };
+      }
+
+      track.appendChild(block);
+    });
+
+    inner.appendChild(track);
+  });
+
+  scroll.appendChild(inner);
+  outer.appendChild(labelsCol);
+  outer.appendChild(scroll);
+  tl.appendChild(outer);
+}
+
+function renderSavedPanel() {
+  const panel = document.getElementById('savedPanel');
+  const items = document.getElementById('savedItems');
+  items.innerHTML = '';
+
+  if (!showSaved || saved.size === 0) {
+    panel.classList.remove('open');
+    return;
+  }
+  panel.classList.add('open');
+
+  const list = [...saved].map(k => {
+    const base = BASE_DATA.find(s => origKey(s) === k);
+    return base ? { k, s: getSet(base) } : null;
+  }).filter(Boolean);
+
+  list.sort((a, b) => {
+    const dd = DAYS.indexOf(a.s.day) - DAYS.indexOf(b.s.day);
+    return dd !== 0 ? dd : dec(a.s.start) - dec(b.s.start);
+  });
+
+  let lastDay = '';
+  list.forEach(({ k, s }) => {
+    if (s.day !== lastDay) {
+      const dh = document.createElement('div');
+      dh.className = 'saved-day-header';
+      dh.textContent = s.day + ' · ' + DAY_DATES[s.day];
+      items.appendChild(dh);
+      lastDay = s.day;
+    }
+    const conflict = checkConflict(k, s);
+    const row = document.createElement('div');
+    row.className = 'saved-row';
+    row.innerHTML = `
+      <div style="display:flex;align-items:center;gap:7px;overflow:hidden">
+        <span class="sname" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${s.artist}</span>
+        ${conflict ? '<span class="conflict-tag">⚠ conflict</span>' : ''}
+      </div>
+      <span class="smeta">${fmt(s.start)}–${fmt(s.end)} · ${s.stage}</span>`;
+    items.appendChild(row);
+  });
+}
+
+function checkConflict(myKey, mySet) {
+  const ms = dec(mySet.start), me = dec(mySet.end);
+  return [...saved].some(k => {
+    if (k === myKey) return false;
+    const base = BASE_DATA.find(s => origKey(s) === k);
+    if (!base) return false;
+    const other = getSet(base);
+    if (other.day !== mySet.day) return false;
+    return ms < dec(other.end) && me > dec(other.start);
+  });
+}
+
+// ── CONTROLS ──────────────────────────────────────────────────────────────
+function toggleSavedPanel() { showSaved = !showSaved; render(); }
+function toggleEditMode() { editMode = !editMode; render(); }
+
+// ── MODAL ─────────────────────────────────────────────────────────────────
+function openModal(key, s, cfg) {
+  editingKey = key;
+  const modified = isOriginallyModified(key);
+  const badge = document.getElementById('modalBadge');
+  badge.innerHTML = `<span style="width:8px;height:8px;border-radius:50%;background:${cfg.color};display:inline-block"></span>${s.stage}`;
+  document.getElementById('modalDay').textContent = s.day + ' · ' + DAY_DATES[s.day];
+  document.getElementById('editArtist').value = s.artist;
+  document.getElementById('editStart').value = toHHMM(s.start);
+  document.getElementById('editEnd').value = toHHMM(s.end);
+  document.getElementById('resetBtn').style.display = modified ? 'block' : 'none';
+  document.getElementById('modalOverlay').classList.add('open');
+}
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  editingKey = null;
+}
+function handleOverlayClick(e) { if (e.target === document.getElementById('modalOverlay')) closeModal(); }
+
+function saveEdit() {
+  if (!editingKey) return;
+  const artist = document.getElementById('editArtist').value.trim();
+  const start = parseTime(document.getElementById('editStart').value);
+  const end = parseTime(document.getElementById('editEnd').value);
+  overrides[editingKey] = { artist, start, end };
+  persist();
+  closeModal();
+  render();
+}
+function resetEdit() {
+  if (!editingKey) return;
+  delete overrides[editingKey];
+  persist();
+  closeModal();
+  render();
+}
+
+// ── EXPORT ────────────────────────────────────────────────────────────────
+function exportFile() {
+  // Merge overrides into base data
+  const merged = BASE_DATA.map(s => {
+    const k = origKey(s);
+    return overrides[k] ? { ...s, ...overrides[k] } : { ...s };
+  });
+
+  const serialized = JSON.stringify(merged)
+    .replace(/\[(\d+),(\d+)\]/g, '[$1, $2]');
+
+  const src = document.documentElement.outerHTML;
+  const replaced = src.replace(
+    /\/\/ __DATA_START__[\s\S]*?\/\/ __DATA_END__/,
+    '// __DATA_START__\nconst BASE_DATA = ' + serialized + ';\n// __DATA_END__'
+  );
+
+  const blob = new Blob([replaced], { type: 'text/html' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'luminosity-2026-schedule.html';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────
+load();
+buildDayTabs();
+render();
+</script>
+</body>
+</html>
