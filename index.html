@@ -741,6 +741,8 @@ function renderTimeline() {
       block.className = 'set-block' + (isSaved ? ' saved' : '') + (dimmed ? ' dimmed' : '');
       block.style.cssText = `left:${startPx}px;width:${blockW}px;background:${cfg.bg};border-color:transparent;`;
       block.title = `${s.artist} · ${fmt(s.start)}–${fmt(s.end)}`;
+      block.dataset.key = k;
+      block.dataset.textColor = cfg.text;
 
       const nameEl = document.createElement('div');
       nameEl.className = 'artist-label';
@@ -765,11 +767,7 @@ function renderTimeline() {
         block.appendChild(editIco);
         block.onclick = () => openModal(k, s, cfg);
       } else {
-        block.onclick = () => {
-          saved.has(k) ? saved.delete(k) : saved.add(k);
-          persist();
-          render();
-        };
+        block.onclick = () => saveToggle(k);
       }
 
       track.appendChild(block);
@@ -840,7 +838,55 @@ function checkConflict(myKey, mySet) {
 }
 
 // ── CONTROLS ──────────────────────────────────────────────────────────────
-function toggleSavedPanel() { showSaved = !showSaved; render(); }
+function saveToggle(k) {
+  if (saved.has(k)) saved.delete(k);
+  else saved.add(k);
+  persist();
+
+  // Update the clicked block in place — no timeline rebuild
+  const block = document.querySelector(`.set-block[data-key="${k}"]`);
+  if (block) {
+    const isSaved = saved.has(k);
+    block.classList.toggle('saved', isSaved);
+
+    // Add or remove heart icon
+    const existingHeart = block.querySelector('.saved-heart');
+    if (isSaved && !existingHeart) {
+      const heart = document.createElement('div');
+      heart.className = 'saved-heart';
+      heart.textContent = '♥';
+      heart.style.color = block.dataset.textColor;
+      block.appendChild(heart);
+    } else if (!isSaved && existingHeart) {
+      existingHeart.remove();
+    }
+  }
+
+  // If filtering to saved-only, update dimmed state on all visible blocks
+  if (showSaved) {
+    document.querySelectorAll('.set-block[data-key]').forEach(b => {
+      b.classList.toggle('dimmed', !saved.has(b.dataset.key));
+    });
+  }
+
+  // Update saved button and panel — no timeline rebuild
+  const savedBtn = document.getElementById('savedBtn');
+  savedBtn.querySelector('span').textContent = saved.size + ' saved';
+  renderSavedPanel();
+}
+
+function toggleSavedPanel() {
+  showSaved = !showSaved;
+  // Update dimmed state on all visible blocks without rebuilding timeline
+  document.querySelectorAll('.set-block[data-key]').forEach(b => {
+    b.classList.toggle('dimmed', showSaved && !saved.has(b.dataset.key));
+  });
+  const savedBtn = document.getElementById('savedBtn');
+  savedBtn.querySelector('span').textContent = saved.size + ' saved';
+  savedBtn.classList.toggle('saved-active', showSaved);
+  renderSavedPanel();
+}
+
 function toggleEditMode() { editMode = !editMode; render(); }
 
 // ── MODAL ─────────────────────────────────────────────────────────────────
